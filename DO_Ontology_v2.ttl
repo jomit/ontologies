@@ -12,18 +12,6 @@
 #    Object Properties
 #################################################################
 
-###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#isTypeOf
-:isTypeOf rdf:type owl:ObjectProperty ;
-          rdfs:domain :Asset ;
-          rdfs:range :AssetType .
-
-
-###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#refersToDataSchema
-:refersToDataSchema rdf:type owl:ObjectProperty ;
-                    rdfs:domain :Asset ;
-                    rdfs:range :Dataschema .
-
-
 ###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2/hasCapability
 :hasCapability rdf:type owl:ObjectProperty ;
                rdfs:domain :Asset ;
@@ -79,9 +67,46 @@
                    rdfs:range :AssetType .
 
 
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2/isTypeOf
+:isTypeOf rdf:type owl:ObjectProperty ;
+          rdfs:domain :Asset ;
+          rdfs:range :AssetType .
+
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2/refersToDataSchema
+:refersToDataSchema rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Asset ;
+                    rdfs:range :Dataschema .
+
+
 #################################################################
 #    Data properties
 #################################################################
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#AssetManufacturer
+:AssetManufacturer rdf:type owl:DatatypeProperty ;
+                   rdfs:domain :Asset .
+
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#AssetModel
+:AssetModel rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Asset .
+
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#AssetProductCode
+:AssetProductCode rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Asset .
+
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#AssetSerialNumber
+:AssetSerialNumber rdf:type owl:DatatypeProperty ;
+                   rdfs:domain :Asset .
+
+
+###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2#AssetVersion
+:AssetVersion rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Asset .
+
 
 ###  http://www.semanticweb.org/jovagh/ontologies/2024/10/do-ontology-v2/ActionsetName
 :ActionsetName rdf:type owl:DatatypeProperty ;
