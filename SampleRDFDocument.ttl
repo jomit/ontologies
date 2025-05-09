@@ -1,0 +1,275 @@
+@prefix : <http://digital-twin-builder//ontologies/2025/4/PointGuard/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://digital-twin-builder//ontologies/2025/4/PointGuard/> .
+
+<http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#contains
+:contains rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#extends
+:extends rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf owl:topObjectProperty ;
+         rdfs:domain :Caterpillar3532G ,
+                     :ContinuousPowerDevice ,
+                     :DerationCapableDevice ,
+                     :MethaneContinuousPowerGenerator ;
+         rdfs:range :Asset ,
+                    :BaseGenerationDevice ,
+                    :ContinuousPowerDevice ,
+                    :DerationCapableDevice .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#hasComponent
+:hasComponent rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Altitude
+:Altitude rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf owl:topDataProperty ;
+          rdfs:domain :DerationCapableDevice ;
+          rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#AmbientHumidity
+:AmbientHumidity rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf owl:topDataProperty ;
+                 rdfs:domain :AmbientData ;
+                 rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#AmbientTemperature
+:AmbientTemperature rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf owl:topDataProperty ;
+                    rdfs:domain :PerformanceData ;
+                    rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#AssetID
+:AssetID rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdfs:domain :Asset ;
+         rdfs:range xsd:string .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Current
+:Current rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdfs:domain :GenerationData ;
+         rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Deration
+:Deration rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf owl:topDataProperty ;
+          rdfs:domain :PerformanceData ;
+          rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#EngineSpeed
+:EngineSpeed rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf owl:topDataProperty ;
+             rdfs:domain :PerformanceData ;
+             rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Frequency
+:Frequency rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf owl:topDataProperty ;
+           rdfs:domain :GenerationData ;
+           rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#FuelConsumption
+:FuelConsumption rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf owl:topDataProperty ;
+                 rdfs:domain :PerformanceData ;
+                 rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#HeadTemperature
+:HeadTemperature rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf owl:topDataProperty ;
+                 rdfs:domain :PerformanceData ;
+                 rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#LoadFactor
+:LoadFactor rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf owl:topDataProperty ;
+            rdfs:domain :PerformanceData ;
+            rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#MaximumOperatingTemperature
+:MaximumOperatingTemperature rdf:type owl:DatatypeProperty ;
+                             rdfs:subPropertyOf owl:topDataProperty ;
+                             rdfs:domain :BaseGenerationDevice ;
+                             rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#MaximumPossibleLoad
+:MaximumPossibleLoad rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf owl:topDataProperty ;
+                     rdfs:domain :BaseGenerationDevice ;
+                     rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#MinimumOperatingTemperature
+:MinimumOperatingTemperature rdf:type owl:DatatypeProperty ;
+                             rdfs:subPropertyOf owl:topDataProperty ;
+                             rdfs:domain :BaseGenerationDevice ;
+                             rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#PM10
+:PM10 rdf:type owl:DatatypeProperty ;
+      rdfs:subPropertyOf owl:topDataProperty ;
+      rdfs:domain :AmbientData ;
+      rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#PowerOutput
+:PowerOutput rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf owl:topDataProperty ;
+             rdfs:domain :GenerationData ;
+             rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#TargetOutput
+:TargetOutput rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf owl:topDataProperty ;
+              rdfs:domain :BaseGenerationDevice ;
+              rdfs:range xsd:double .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Voltage
+:Voltage rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdfs:domain :GenerationData ;
+         rdfs:range xsd:double .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#AmbientData
+:AmbientData rdf:type owl:Class ;
+             rdfs:subClassOf :Object .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Asset
+:Asset rdf:type owl:Class ;
+       rdfs:subClassOf :EntitType .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#BaseGenerationDevice
+:BaseGenerationDevice rdf:type owl:Class ;
+                      rdfs:subClassOf :Capability .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Capability
+:Capability rdf:type owl:Class .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Caterpillar3532G
+:Caterpillar3532G rdf:type owl:Class ;
+                  rdfs:subClassOf :EntitType .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#ContinuousPowerDevice
+:ContinuousPowerDevice rdf:type owl:Class ;
+                       rdfs:subClassOf :Capability .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#DerationCapableDevice
+:DerationCapableDevice rdf:type owl:Class ;
+                       rdfs:subClassOf :Capability .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#EntitType
+:EntitType rdf:type owl:Class .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#GenerationData
+:GenerationData rdf:type owl:Class ;
+                rdfs:subClassOf :Object .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Interface
+:Interface rdf:type owl:Class .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#MethaneContinuousPowerGenerator
+:MethaneContinuousPowerGenerator rdf:type owl:Class ;
+                                 rdfs:subClassOf :EntitType .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Object
+:Object rdf:type owl:Class .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#PerformanceData
+:PerformanceData rdf:type owl:Class ;
+                 rdfs:subClassOf :Object .
+
+
+###  http://digital-twin-builder/jomit/ontologies/2025/4/PointGuard#Pump
+:Pump rdf:type owl:Class ;
+      rdfs:subClassOf :Interface .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AmbientData
+                :GenerationData
+                :PerformanceData
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Asset
+                :Caterpillar3532G
+                :MethaneContinuousPowerGenerator
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :BaseGenerationDevice
+                :ContinuousPowerDevice
+                :DerationCapableDevice
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Capability
+                :EntitType
+                :Interface
+                :Object
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi
