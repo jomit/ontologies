@@ -1,0 +1,327 @@
+@prefix :      <http://example.org/Zava#> .
+@prefix Zava: <http://example.org/Zava#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+# Ontology header
+#################################################################
+
+Zava:SupplyChainOntology a owl:Ontology ;
+  rdfs:label "Zava Foods Supply Chain Ontology" ;
+  rdfs:comment "Cold-chain FMCG supply chain ontology for Plants, DCs, Stores, Carriers, Shipments, Orders, Products, Reefer Containers, Telemetry, Inventory, Lanes; designed to bind to OneLake/Eventhouse tables in Fabric." .
+
+#################################################################
+# Core Classes
+#################################################################
+
+:Location a owl:Class ; rdfs:label "Location" .
+:Plant a owl:Class ; rdfs:subClassOf :Location ; rdfs:label "Plant" .
+:DistributionCenter a owl:Class ; rdfs:subClassOf :Location ; rdfs:label "Distribution Center" ; skos:altLabel "DC", "Depot" .
+:Store a owl:Class ; rdfs:subClassOf :Location ; rdfs:label "Store" .
+:RetailStore a owl:Class ; rdfs:subClassOf :Store ; rdfs:label "Retail Store" .
+:FranchiseStore a owl:Class ; rdfs:subClassOf :Store ; rdfs:label "Franchise Store" .
+
+:Carrier a owl:Class ; rdfs:label "Carrier" .
+:ReeferContainer a owl:Class ; rdfs:label "Reefer Container" ; skos:altLabel "Reefer", "Chilled Container" .
+
+:Product a owl:Class ; rdfs:label "Product" .
+
+:Shipment a owl:Class ;
+  rdfs:label "Shipment" ;
+  rdfs:comment "Logical shipment between two locations (origin→destination)." .
+
+:ShipmentItem a owl:Class ; rdfs:label "Shipment Item" .
+
+:Order a owl:Class ; rdfs:label "Order" .
+
+:InventorySnapshot a owl:Class ; rdfs:label "Inventory Snapshot" .
+
+:Lane a owl:Class ; rdfs:label "Lane" ; rdfs:comment "Origin/destination pair with target transit hours and SLA." .
+
+# Reified relation to carry assignment-level properties
+:ReeferAssignment a owl:Class ;
+  rdfs:label "Reefer Assignment" ;
+  rdfs:comment "Reified relationship that links a ReeferContainer to a Shipment with assignment window times." .
+
+# Optional: simple Observation for long-format telemetry
+:Observation a owl:Class ;
+  rdfs:label "Observation" ;
+  rdfs:comment "Long format telemetry or logistics observation (e.g., temperature, gpsLat, gpsLon, doorOpen)." .
+
+#################################################################
+# Object Properties (relationships)
+#################################################################
+
+:originatesFrom a owl:ObjectProperty ;
+  rdfs:domain :Shipment ; rdfs:range :Location ;
+  rdfs:label "originates from" .
+
+:deliversTo a owl:ObjectProperty ;
+  rdfs:domain :Shipment ; rdfs:range :Location ;
+  rdfs:label "delivers to" .
+
+:contains a owl:ObjectProperty ;
+  rdfs:domain :Shipment ; rdfs:range :ShipmentItem ;
+  rdfs:label "contains" .
+
+:hasProduct a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain :ShipmentItem ; rdfs:range :Product ;
+  rdfs:label "has product" .
+
+:assignedTo a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain :ReeferContainer ; rdfs:range :Shipment ;
+  rdfs:label "assigned to" ;
+  rdfs:comment "Functional to reflect max 1 current assignment; historical windows captured via ReeferAssignment." .
+
+:fulfilledBy a owl:ObjectProperty ;
+  rdfs:domain :Order ; rdfs:range :Shipment ;
+  rdfs:label "fulfilled by" .
+
+:ofProduct a owl:ObjectProperty ;
+  rdfs:domain :InventorySnapshot ; rdfs:range :Product ;
+  rdfs:label "of product" .
+
+:atLocation a owl:ObjectProperty ;
+  rdfs:domain :InventorySnapshot ; rdfs:range :Location ;
+  rdfs:label "at location" .
+
+# Lane relations
+:originLocation a owl:ObjectProperty ;
+  rdfs:domain :Lane ; rdfs:range :Location ;
+  rdfs:label "origin location" .
+
+:destLocation a owl:ObjectProperty ;
+  rdfs:domain :Lane ; rdfs:range :Location ;
+  rdfs:label "destination location" .
+
+# ReeferAssignment (reified n-ary)
+:assignsContainer a owl:ObjectProperty ;
+  rdfs:domain :ReeferAssignment ; rdfs:range :ReeferContainer ;
+  rdfs:label "assigns container" .
+
+:assignsShipment a owl:ObjectProperty ;
+  rdfs:domain :ReeferAssignment ; rdfs:range :Shipment ;
+  rdfs:label "assigns shipment" .
+
+# Observation links
+:observedOn a owl:ObjectProperty ;
+  rdfs:domain :Observation ; rdfs:range :ReeferContainer ;
+  rdfs:label "observed on" .
+
+#################################################################
+# Datatype Properties (selected)
+#################################################################
+
+# Common/meta
+:displayName a owl:DatatypeProperty ; rdfs:range xsd:string .
+:description a owl:DatatypeProperty ; rdfs:range xsd:string .
+
+# Location
+:locationID a owl:DatatypeProperty ; rdfs:domain :Location ; rdfs:range xsd:string .
+:city a owl:DatatypeProperty ; rdfs:domain :Location ; rdfs:range xsd:string .
+:country a owl:DatatypeProperty ; rdfs:domain :Location ; rdfs:range xsd:string .
+:lat a owl:DatatypeProperty ; rdfs:domain :Location ; rdfs:range xsd:decimal .
+:lon a owl:DatatypeProperty ; rdfs:domain :Location ; rdfs:range xsd:decimal .
+
+# Carrier
+:carrierID a owl:DatatypeProperty ; rdfs:domain :Carrier ; rdfs:range xsd:string .
+:carrierName a owl:DatatypeProperty ; rdfs:domain :Carrier ; rdfs:range xsd:string .
+:avgTransitHours a owl:DatatypeProperty ; rdfs:domain :Carrier ; rdfs:range xsd:decimal .
+
+# Product
+:sku a owl:DatatypeProperty ; rdfs:domain :Product ; rdfs:range xsd:string .
+:brand a owl:DatatypeProperty ; rdfs:domain :Product ; rdfs:range xsd:string .
+:category a owl:DatatypeProperty ; rdfs:domain :Product ; rdfs:range xsd:string .
+:tempSpecMin a owl:DatatypeProperty ; rdfs:domain :Product ; rdfs:range xsd:decimal .
+:tempSpecMax a owl:DatatypeProperty ; rdfs:domain :Product ; rdfs:range xsd:decimal .
+
+# Shipment
+:shipmentID a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:string .
+:plannedDepart a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:dateTime .
+:plannedArrive a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:dateTime .
+:actualDepart a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:dateTime .
+:actualArrive a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:dateTime .
+:status a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:string .
+:otifPercent a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:decimal .
+:fillRatePercent a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:decimal .
+:risk a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:string .
+:delayRisk a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:string .
+
+# ShipmentItem
+:qty a owl:DatatypeProperty ; rdfs:domain :ShipmentItem ; rdfs:range xsd:integer .
+:lot a owl:DatatypeProperty ; rdfs:domain :ShipmentItem ; rdfs:range xsd:string .
+:pallets a owl:DatatypeProperty ; rdfs:domain :ShipmentItem ; rdfs:range xsd:integer .
+
+# Order
+:orderID a owl:DatatypeProperty ; rdfs:domain :Order ; rdfs:range xsd:string .
+:orderDate a owl:DatatypeProperty ; rdfs:domain :Order ; rdfs:range xsd:dateTime .
+:promiseDate a owl:DatatypeProperty ; rdfs:domain :Order ; rdfs:range xsd:dateTime .
+
+# InventorySnapshot
+:onHandQty a owl:DatatypeProperty ; rdfs:domain :InventorySnapshot ; rdfs:range xsd:integer .
+:safetyStock a owl:DatatypeProperty ; rdfs:domain :InventorySnapshot ; rdfs:range xsd:integer .
+:snapshotTS a owl:DatatypeProperty ; rdfs:domain :InventorySnapshot ; rdfs:range xsd:dateTime .
+
+# Reefer & assignment
+:assetId a owl:DatatypeProperty ; rdfs:domain :ReeferContainer ; rdfs:range xsd:string .
+:assignedFromTS a owl:DatatypeProperty ; rdfs:domain :ReeferAssignment ; rdfs:range xsd:dateTime .
+:assignedToTS a owl:DatatypeProperty ; rdfs:domain :ReeferAssignment ; rdfs:range xsd:dateTime .
+
+# Lane SLA
+:targetTransitHours a owl:DatatypeProperty ; rdfs:domain :Lane ; rdfs:range xsd:decimal .
+
+# Observation (long-format)
+:sensorName a owl:DatatypeProperty ; rdfs:domain :Observation ; rdfs:range xsd:string .
+:value a owl:DatatypeProperty ; rdfs:domain :Observation ; rdfs:range xsd:string .
+:sourceTimestamp a owl:DatatypeProperty ; rdfs:domain :Observation ; rdfs:range xsd:dateTime .
+
+#################################################################
+# Class Axioms / Constraints (OWL restrictions)
+#################################################################
+
+# Shipment must contain at least one ShipmentItem
+:Shipment rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty :contains ;
+  owl:minCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+# ShipmentItem must have exactly one Product
+:ShipmentItem rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty :hasProduct ;
+  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+  owl:onClass :Product
+] .
+
+# ReeferContainer assignedTo at most 1 Shipment (current)
+:ReeferContainer rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty :assignedTo ;
+  owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+#################################################################
+# Example Individuals (seeded to mirror the run book)
+#################################################################
+
+# Locations
+:Plant_P1 a :Plant ;
+  :locationID "P1" ;
+  :displayName "Plant P1" ;
+  :city "Rotterdam" ; :country "Netherlands" ;
+  :lat "51.9244"^^xsd:decimal ; :lon "4.4777"^^xsd:decimal .
+
+:DC_PAR a :DistributionCenter ;
+  :locationID "DC_PAR" ;
+  :displayName "DC Paris" ;
+  :city "Paris" ; :country "France" ;
+  :lat "48.8566"^^xsd:decimal ; :lon "2.3522"^^xsd:decimal .
+
+:DC_BER a :DistributionCenter ;
+  :locationID "DC_BER" ;
+  :displayName "DC Berlin" ;
+  :city "Berlin" ; :country "Germany" ;
+  :lat "52.5200"^^xsd:decimal ; :lon "13.4050"^^xsd:decimal .
+
+:Store_BER_1 a :RetailStore ;
+  :locationID "STO_BER_1" ;
+  :displayName "Store Berlin 1" ;
+  :city "Berlin" ; :country "Germany" ;
+  :lat "52.5205"^^xsd:decimal ; :lon "13.4049"^^xsd:decimal .
+
+# Carrier
+:Carrier_CARR_EU1 a :Carrier ;
+  :carrierID "CARR_EU1" ;
+  :carrierName "TransEuro Logistics" ;
+  :avgTransitHours "12.5"^^xsd:decimal .
+
+# Products
+:Product_IC100 a :Product ;
+  :sku "IC100" ; :brand "Zava" ; :category "IceCream-Vanilla" ;
+  :tempSpecMin "-18.0"^^xsd:decimal ; :tempSpecMax "-12.0"^^xsd:decimal .
+
+:Product_IC200 a :Product ;
+  :sku "IC200" ; :brand "Zava" ; :category "IceCream-Chocolate" ;
+  :tempSpecMin "-18.0"^^xsd:decimal ; :tempSpecMax "-12.0"^^xsd:decimal .
+
+# Shipment + items
+:Shipment_SHP2000 a :Shipment ;
+  :shipmentID "SHP2000" ;
+  :originatesFrom :Plant_P1 ;
+  :deliversTo :DC_PAR ;
+  :plannedDepart "2025-09-12T08:00:00Z"^^xsd:dateTime ;
+  :plannedArrive "2025-09-12T18:00:00Z"^^xsd:dateTime ;
+  :actualDepart  "2025-09-12T08:05:00Z"^^xsd:dateTime ;
+  :actualArrive  "2025-09-12T19:22:00Z"^^xsd:dateTime ;
+  :status "Arrived" ;
+  :otifPercent "0.0"^^xsd:decimal ;                # late
+  :fillRatePercent "0.92"^^xsd:decimal ;
+  :risk "High" ;
+  :delayRisk "High" .
+
+:ShipmentItem_SHP2000_1 a :ShipmentItem ;
+  :qty "80"^^xsd:integer ; :lot "LOT12345" ; :pallets "2"^^xsd:integer ;
+  :hasProduct :Product_IC100 .
+
+:ShipmentItem_SHP2000_2 a :ShipmentItem ;
+  :qty "60"^^xsd:integer ; :lot "LOT12346" ; :pallets "2"^^xsd:integer ;
+  :hasProduct :Product_IC200 .
+
+# Link shipment to its items
+:Shipment_SHP2000 :contains :ShipmentItem_SHP2000_1 , :ShipmentItem_SHP2000_2 .
+
+# Reefer & assignment
+:Reefer_RC001 a :ReeferContainer ;
+  :assetId "RC001" ;
+  :assignedTo :Shipment_SHP2000 .
+
+:RA_SHP2000_RC001 a :ReeferAssignment ;
+  :assignsContainer :Reefer_RC001 ;
+  :assignsShipment  :Shipment_SHP2000 ;
+  :assignedFromTS "2025-09-12T07:30:00Z"^^xsd:dateTime ;
+  :assignedToTS   "2025-09-12T19:52:00Z"^^xsd:dateTime .
+
+# Order fulfilled by shipment
+:Order_ORD1000 a :Order ;
+  :orderID "ORD1000" ;
+  :orderDate  "2025-09-09T09:00:00Z"^^xsd:dateTime ;
+  :promiseDate "2025-09-12T18:00:00Z"^^xsd:dateTime ;
+  :fulfilledBy :Shipment_SHP2000 .
+
+# Inventory snapshot
+:Inv_DC_PAR_IC100_2025_09_10 a :InventorySnapshot ;
+  :ofProduct :Product_IC100 ;
+  :atLocation :DC_PAR ;
+  :onHandQty "160"^^xsd:integer ;
+  :safetyStock "80"^^xsd:integer ;
+  :snapshotTS "2025-09-10T00:00:00Z"^^xsd:dateTime .
+
+# Lane
+:Lane_P1_PAR a :Lane ;
+  :originLocation :Plant_P1 ;
+  :destLocation :DC_PAR ;
+  :targetTransitHours "10"^^xsd:decimal .
+
+# Telemetry observations (long-format examples)
+:Obs1 a :Observation ;
+  :observedOn :Reefer_RC001 ;
+  :sensorName "temperature" ;
+  :value "-13.2" ;
+  :sourceTimestamp "2025-09-12T12:00:00Z"^^xsd:dateTime .
+
+:Obs2 a :Observation ;
+  :observedOn :Reefer_RC001 ;
+  :sensorName "gpsLat" ;
+  :value "50.12345" ;
+  :sourceTimestamp "2025-09-12T12:00:00Z"^^xsd:dateTime .
+
+:Obs3 a :Observation ;
+  :observedOn :Reefer_RC001 ;
+  :sensorName "gpsLon" ;
+  :value "6.23456" ;
+  :sourceTimestamp "2025-09-12T12:00:00Z"^^xsd:dateTime .
